@@ -1,7 +1,7 @@
 ################################### VARIABLES ##################################
 #COMPILING
-CC = cc
-CFLAGS = -Wall -Wextra -Werror
+CC = gcc
+CFLAGS = -std=gnu99 -Wall -Wextra -Werror
 INCLUDES = -I/usr/include -Ilibft -Imy_printf
 RM = rm -rf
 NAME = minitalk
@@ -34,10 +34,10 @@ make_printf:
 	@cd my_printf && make > /dev/null
 	@echo "$(BLUE)FT_PRINTF			$(CUT)$(GREEN)[OK]$(CUT)"
 make_server: $(SERVER_OBJS) $(GLOBAL_OBJS)
-	@$(CC) $(SERVER_OBJS) $(GLOBAL_OBJS) $(LIBFT) $(PRINTF) -o server
+	@$(CC) $(CFLAGS) $(SERVER_OBJS) $(GLOBAL_OBJS) $(LIBFT) $(PRINTF) -o server
 	@echo "$(BLUE)SERVER				$(CUT)$(GREEN)[OK]$(CUT)"
 make_client: $(CLIENT_OBJS) $(GLOBAL_OBJS)
-	@$(CC) $(CLIENT_OBJS) $(GLOBAL_OBJS) $(LIBFT) $(PRINTF) -o client
+	@$(CC) $(CFLAGS) $(CLIENT_OBJS) $(GLOBAL_OBJS) $(LIBFT) $(PRINTF) -o client
 	@echo "$(BLUE)CLIENT				$(CUT)$(GREEN)[OK]$(CUT)"
 %.o: %.c
 	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
@@ -53,6 +53,6 @@ clean_printf:
 	@cd my_printf && make fclean > /dev/null
 	@echo "$(BLUE)FT_PRINTF			$(CUT)$(RED)[DELETE]$(CUT)"
 clean_objects:
-	@$(RM) $(SERVER_OBJS) $(CLIENT_OBJS) $(GLOBAL_OBJS)
+	@$(RM) *.o
 	@echo "$(BLUE)OBJECTS				$(CUT)$(RED)[DELETE]$(CUT)"
 re: fclean all

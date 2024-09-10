@@ -1,12 +1,10 @@
 #include "minitalk.h"
 
-/*
 int	main(int argc, char **argv)
 {
 	int		pid;
 	int		i;
 	char	*message;
-	char	*message_encoded;
 
 	if (argc == 3)
 	{
@@ -15,17 +13,15 @@ int	main(int argc, char **argv)
 		i = 0;
 		while (message[i])
 		{
-			send_char(pid, message[i]);
+			ft_putnbr_fd(message[i], 1);
+			write(1, " - '",4);
+			ft_putchar_fd(message[i], 1);
+			write(1, "'", 1);
+			send_char(pid, (unsigned int)message[i]);
 			i++;
 		}
 	}
 	else
 		ft_printf("Error : Wrong format!\nPlease use this way :\n\n./client <PID> \"message\"");
 	return (0);
-}
-*/
-
-int	main(void)
-{
-	ft_printf("Client launched.\n");
 }

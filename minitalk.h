@@ -1,15 +1,17 @@
 #ifndef MINITALK
 # define MINITALK
 
-//libraries
+// LIBRARIES
+//personal libs
 # include "libft/libft.h"
 # include "my_printf/ft_printf.h"
-# include <unistd.h>
-# include <signal.h>
+//system libs
+# include <unistd.h> //write(), pause(), sleep(), usleep()
+# include <signal.h> //signal(), sigaction(), sigemptyset(), sigaddset(), sigaction(), kill(), getpid()
+# include <stdlib.h> //malloc(), free(), exit()
 
-//client.c
-//server.c
+// FUNCTIONS
 //utils.c
-void	send_char(int pid, char c);
+void	send_char(int pid, unsigned int c);
 
 #endif
