@@ -8,8 +8,8 @@
 # include <signal.h>
 
 //client.c
-void	send_char(int pid, char c);
 //server.c
 //utils.c
+void	send_char(int pid, char c);
 
 #endif
