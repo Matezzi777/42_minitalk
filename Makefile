@@ -29,30 +29,30 @@ all: $(NAME)
 $(NAME): make_libft make_printf make_server make_client
 make_libft:
 	@cd libft && make > /dev/null
-	@echo "$(BLUE)LIBFT				$(GREEN)[OK]$(CUT)"
+	@echo "$(BLUE)LIBFT				$(CUT)$(GREEN)[OK]$(CUT)"
 make_printf:
 	@cd my_printf && make > /dev/null
-	@echo "$(BLUE)FT_PRINTF			$(GREEN)[OK]$(CUT)"
+	@echo "$(BLUE)FT_PRINTF			$(CUT)$(GREEN)[OK]$(CUT)"
 make_server: $(SERVER_OBJS) $(GLOBAL_OBJS)
 	@$(CC) $(SERVER_OBJS) $(GLOBAL_OBJS) $(LIBFT) $(PRINTF) -o server
-	@echo "$(BLUE)SERVER				$(GREEN)[OK]$(CUT)"
+	@echo "$(BLUE)SERVER				$(CUT)$(GREEN)[OK]$(CUT)"
 make_client: $(CLIENT_OBJS) $(GLOBAL_OBJS)
 	@$(CC) $(CLIENT_OBJS) $(GLOBAL_OBJS) $(LIBFT) $(PRINTF) -o client
-	@echo "$(BLUE)CLIENT				$(GREEN)[OK]$(CUT)"
+	@echo "$(BLUE)CLIENT				$(CUT)$(GREEN)[OK]$(CUT)"
 %.o: %.c
 	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 #CLEANING RULES
 fclean: clean
 	@$(RM) client server
-	@echo "$(BLUE)SERVER + CLIENT			$(RED)[DELETE]$(CUT)"
+	@echo "$(BLUE)SERVER + CLIENT			$(CUT)$(RED)[DELETE]$(CUT)"
 clean: clean_libft clean_printf clean_objects
 clean_libft:
 	@cd libft && make fclean > /dev/null
-	@echo "$(BLUE)LIBFT				$(RED)[DELETE]$(CUT)"
+	@echo "$(BLUE)LIBFT				$(CUT)$(RED)[DELETE]$(CUT)"
 clean_printf:
 	@cd my_printf && make fclean > /dev/null
-	@echo "$(BLUE)FT_PRINTF			$(RED)[DELETE]$(CUT)"
+	@echo "$(BLUE)FT_PRINTF			$(CUT)$(RED)[DELETE]$(CUT)"
 clean_objects:
 	@$(RM) $(SERVER_OBJS) $(CLIENT_OBJS) $(GLOBAL_OBJS)
-	@echo "$(BLUE)OBJECTS				$(RED)[DELETE]$(CUT)"
+	@echo "$(BLUE)OBJECTS				$(CUT)$(RED)[DELETE]$(CUT)"
 re: fclean all
