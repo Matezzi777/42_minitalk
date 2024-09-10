@@ -1,4 +1,4 @@
-#==============================================================================
+################################### VARIABLES ##################################
 #COMPILING
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
@@ -23,47 +23,36 @@ GREEN = \033[1;32m
 BLUE = \033[0;34m
 CUT = \033[0m
 
-#==============================================================================
+#################################### RULES #####################################
+#COMPILING RULES
 all: $(NAME)
-
 $(NAME): make_libft make_printf make_server make_client
-
 make_libft:
 	@cd libft && make > /dev/null
-	@echo "$(BLUE)LIBFT				$(GREEN)|OK|$(CUT)"
-
+	@echo "$(BLUE)LIBFT				$(GREEN)[OK]$(CUT)"
 make_printf:
 	@cd my_printf && make > /dev/null
-	@echo "$(BLUE)FT_PRINTF			$(GREEN)|OK|$(CUT)"
-
+	@echo "$(BLUE)FT_PRINTF			$(GREEN)[OK]$(CUT)"
 make_server: $(SERVER_OBJS) $(GLOBAL_OBJS)
 	@$(CC) $(SERVER_OBJS) $(GLOBAL_OBJS) $(LIBFT) $(PRINTF) -o server
-	@echo "$(BLUE)SERVER				$(GREEN)|OK|$(CUT)"
-
+	@echo "$(BLUE)SERVER				$(GREEN)[OK]$(CUT)"
 make_client: $(CLIENT_OBJS) $(GLOBAL_OBJS)
 	@$(CC) $(CLIENT_OBJS) $(GLOBAL_OBJS) $(LIBFT) $(PRINTF) -o client
-	@echo "$(BLUE)CLIENT				$(GREEN)|OK|$(CUT)"
-
+	@echo "$(BLUE)CLIENT				$(GREEN)[OK]$(CUT)"
 %.o: %.c
 	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
-
-#==============================================================================
+#CLEANING RULES
 fclean: clean
 	@$(RM) client server
-	@echo "$(BLUE)SERVER + CLIENT			$(RED)|DELETE|$(CUT)"
-
+	@echo "$(BLUE)SERVER + CLIENT			$(RED)[DELETE]$(CUT)"
 clean: clean_libft clean_printf clean_objects
-
 clean_libft:
 	@cd libft && make fclean > /dev/null
-	@echo "$(BLUE)LIBFT				$(RED)|DELETE|$(CUT)"
-
+	@echo "$(BLUE)LIBFT				$(RED)[DELETE]$(CUT)"
 clean_printf:
 	@cd my_printf && make fclean > /dev/null
-	@echo "$(BLUE)FT_PRINTF			$(RED)|DELETE|$(CUT)"
-
+	@echo "$(BLUE)FT_PRINTF			$(RED)[DELETE]$(CUT)"
 clean_objects:
 	@$(RM) $(SERVER_OBJS) $(CLIENT_OBJS) $(GLOBAL_OBJS)
-	@echo "$(BLUE)OBJECTS				$(RED)|DELETE|$(CUT)"
-
+	@echo "$(BLUE)OBJECTS				$(RED)[DELETE]$(CUT)"
 re: fclean all
