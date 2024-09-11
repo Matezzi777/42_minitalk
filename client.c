@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   client.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mmartina <mmartina@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/09/11 16:48:27 by mmartina          #+#    #+#             */
+/*   Updated: 2024/09/11 16:58:55 by mmartina         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minitalk.h"
 
 int	main(int argc, char **argv)
@@ -14,7 +26,7 @@ int	main(int argc, char **argv)
 		while (message[i])
 		{
 			ft_putnbr_fd(message[i], 1);
-			write(1, " - '",4);
+			write(1, " - '", 4);
 			ft_putchar_fd(message[i], 1);
 			write(1, "'", 1);
 			send_char(pid, (unsigned int)message[i]);
@@ -22,6 +34,9 @@ int	main(int argc, char **argv)
 		}
 	}
 	else
-		ft_printf("Error : Wrong format!\nPlease use this way :\n\n./client <PID> \"message\"");
+	{
+		ft_printf("Error : Wrong format!\nPlease use this way :\n\n");
+		ft_printf("./client <PID> \"message\"\n");
+	}
 	return (0);
 }

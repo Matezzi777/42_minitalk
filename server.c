@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   server.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mmartina <mmartina@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/09/11 16:48:34 by mmartina          #+#    #+#             */
+/*   Updated: 2024/09/11 16:59:39 by mmartina         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minitalk.h"
 
 void	handle_signal(int code)
@@ -24,7 +36,8 @@ int	main(void)
 	sigemptyset(&sa.sa_mask);
 	sigaction(SIGUSR1, &sa, NULL);
 	sigaction(SIGUSR2, &sa, NULL);
-	ft_printf("Server launched with PID : %d\nEn attente d'un signal...\n", getpid());
+	ft_printf("Server launched with PID : %d\nEn attente d'un signal...\n",
+		getpid());
 	i = 0;
 	while (1)
 	{
