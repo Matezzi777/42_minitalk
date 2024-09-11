@@ -6,7 +6,7 @@
 /*   By: mmartina <mmartina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 16:48:27 by mmartina          #+#    #+#             */
-/*   Updated: 2024/09/11 16:58:55 by mmartina         ###   ########.fr       */
+/*   Updated: 2024/09/11 23:45:11 by mmartina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,10 @@ int	main(int argc, char **argv)
 		i = 0;
 		while (message[i])
 		{
-			ft_putnbr_fd(message[i], 1);
-			write(1, " - '", 4);
-			ft_putchar_fd(message[i], 1);
-			write(1, "'", 1);
 			send_char(pid, (unsigned int)message[i]);
 			i++;
 		}
+		send_char(pid, 0);
 	}
 	else
 	{
