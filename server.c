@@ -6,7 +6,7 @@
 /*   By: mmartina <mmartina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 16:48:34 by mmartina          #+#    #+#             */
-/*   Updated: 2024/09/12 02:13:32 by mmartina         ###   ########.fr       */
+/*   Updated: 2024/09/12 16:14:36 by mmartina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ unsigned int	g_count = 0;
 
 void	display_server_startup_message(int pid)
 {
-	ft_printf("::::    ::::  ::::::::::: ::::    ::: ::::::::::: ::::::::::: :::     :::        :::    :::\n");
+	ft_printf("::::     :::: ::::::::::: ::::    ::: ::::::::::: ::::::::::: :::     :::        :::    :::\n");
 	ft_printf("+:+:+: :+:+:+     :+:     :+:+:   :+:     :+:         :+:   :+: :+:   :+:        :+:   :+:\n");
 	ft_printf("+:+ +:+:+ +:+     +:+     :+:+:+  +:+     +:+         +:+  +:+   +:+  +:+        +:+  +:+\n");
 	ft_printf("+#+  +:+  +#+     +#+     +#+ +:+ +#+     +#+         +#+ +#++:++#++: +#+        +#++:++\n");
@@ -43,7 +43,7 @@ void	handle_signal(int code)
 		actual_char = (actual_char << 1) + 1;
 	else
 		ft_printf("\nERROR : UNEXPECTED SIGNAL RECEIVED\n");
-	if ((++g_count % 32) == 0)
+	if ((++g_count == 32))
 	{
 		if (actual_char == 0)
 		{
@@ -52,6 +52,8 @@ void	handle_signal(int code)
 		}
 		else
 			ft_putchar_fd(actual_char, 1);
+		actual_char = 0;
+		g_count = 0;
 	}
 }
 
@@ -59,13 +61,13 @@ int	main(void)
 {
 	struct sigaction	sa;
 
-	sa.sa_flags = 0;
+	display_server_startup_message(getpid());
+	ft_printf("En attente...\n===== PRINT AREA =====\n\n");
 	sa.sa_handler = &handle_signal;
+	sa.sa_flags = 0;
 	sigemptyset(&sa.sa_mask);
 	sigaction(SIGUSR1, &sa, NULL);
 	sigaction(SIGUSR2, &sa, NULL);
-	display_server_startup_message(getpid());
-	ft_printf("En attente...\n===== PRINT AREA =====\n\n");
 	while (1)
 		pause();
 }
