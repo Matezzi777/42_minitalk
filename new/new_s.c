@@ -18,7 +18,7 @@ void	server_sig_handler(int code)
 		if (actual_char == 0)
 		{
 			ft_printf("Transmission terminée.\n\n");
-			kill(); //Envoyer SIGUSR2
+			kill(client_pid, SIGUSR2); //Envoyer SIGUSR2
 		}
 		else
 		{
@@ -26,7 +26,7 @@ void	server_sig_handler(int code)
 				client_pid = actual_char;
 			else
 				ft_putchar_fd(actual_char, 1);
-			kill(); //Envoyer SIGUSR1
+			kill(client_pid, SIGUSR1); //Envoyer SIGUSR1
 		}
 	}
 }
@@ -35,7 +35,7 @@ int		main(void)
 {
 	struct sigaction sigaction_server;
 
-	ft_printf("=== SERVER STARTED ===\nEn attente...\n")
+	ft_printf("=== SERVER STARTED ===\nEn attente...\n");
 	sigaction_server.sa_handler = &server_sig_handler;
 	sigaction_server.sa_flags = 0;
 	sigemptyset(&sigaction_server.sa_mask);
