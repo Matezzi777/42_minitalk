@@ -9,9 +9,18 @@ NAME = minitalk
 LIBFT = -Llibft -l:libft.a
 PRINTF = -Lmy_printf -l:libftprintf.a
 #SOURCES
-SERVER_SRCS = server.c
-CLIENT_SRCS = client.c
+#SERVER_SRCS = server.c
+SERVER_SRCS = new/server_bis.c
+
+#CLIENT_SRCS = client.c
+CLIENT_SRCS = new/client_bis.c
+
+#GLOBAL_SRCS = utils.c
 GLOBAL_SRCS = utils.c
+
+
+
+
 #OBJECTS
 SERVER_OBJS = $(SERVER_SRCS:.c=.o)
 CLIENT_OBJS = $(CLIENT_SRCS:.c=.o)
