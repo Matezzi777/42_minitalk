@@ -6,7 +6,7 @@
 /*   By: mmartina <mmartina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 16:48:46 by mmartina          #+#    #+#             */
-/*   Updated: 2024/09/11 16:52:20 by mmartina         ###   ########.fr       */
+/*   Updated: 2024/09/24 17:54:00 by mmartina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,4 @@
 						//sigaddset(), sigaction(), kill(), getpid()
 
 // FUNCTIONS
-//utils.c
-void	send_char(int pid, unsigned int c);
-
 #endif

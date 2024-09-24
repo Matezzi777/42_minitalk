@@ -1,73 +1,87 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   server.c                                           :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: mmartina <mmartina@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/11 16:48:34 by mmartina          #+#    #+#             */
-/*   Updated: 2024/09/12 16:14:36 by mmartina         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "minitalk.h"
 
-unsigned int	g_count = 0;
+// g_acknowledge = [flag_signal_received , signal_origin_pid]
+static volatile sig_atomic_t	g_acknowledge[2] = {0, 0};
 
-void	display_server_startup_message(int pid)
+// static void	extract_content(int c)
+// {
+// 	static int	string[100];
+// 	static int	i;
+
+// 	string[i++] = c;
+// 	if (i == 100)
+// 	{
+// 		write(1, &string, i);
+// 		i = 0;
+// 	}
+// 	if (c == 0)
+// 	{
+// 		write(1, &string, i);
+// 		write(1, "\n\n==========\nListening...\n", 26);
+// 		i = 0;
+// 	}
+// }
+
+static void	server_sighandler(int sig, siginfo_t *info, void *context)
 {
-	ft_printf("::::     :::: ::::::::::: ::::    ::: ::::::::::: ::::::::::: :::     :::        :::    :::\n");
-	ft_printf("+:+:+: :+:+:+     :+:     :+:+:   :+:     :+:         :+:   :+: :+:   :+:        :+:   :+:\n");
-	ft_printf("+:+ +:+:+ +:+     +:+     :+:+:+  +:+     +:+         +:+  +:+   +:+  +:+        +:+  +:+\n");
-	ft_printf("+#+  +:+  +#+     +#+     +#+ +:+ +#+     +#+         +#+ +#++:++#++: +#+        +#++:++\n");
-	ft_printf("+#+       +#+     +#+     +#+  +#+#+#     +#+         +#+ +#+     +#+ +#+        +#+  +#+\n");
-	ft_printf("#+#       #+#     #+#     #+#   #+#+#     #+#         #+# #+#     #+# #+#        #+#   #+#\n");
-	ft_printf("###       ### ########### ###    #### ###########     ### ###     ### ########## ###    ###\n");
-	ft_printf("               ::::::::  :::::::::: :::::::::  :::     ::: :::::::::: :::::::::\n");
-	ft_printf("              :+:    :+: :+:        :+:    :+: :+:     :+: :+:        :+:    :+:\n");
-	ft_printf("              +:+        +:+        +:+    +:+ +:+     +:+ +:+        +:+    +:+\n");
-	ft_printf("+#++:++#++:++ +#++:++#++ +#++:++#   +#++:++#:  +#+     +:+ +#++:++#   +#++:++#: +#++:++#++:++\n");
-	ft_printf("                     +#+ +#+        +#+    +#+  +#+   +#+  +#+        +#+    +#+\n");
-	ft_printf("              #+#    #+# #+#        #+#    #+#   #+#+#+#   #+#        #+#    #+#\n");
-	ft_printf("               ########  ########## ###    ###     ###     ########## ###    ###\n");
-	ft_printf("PID : %d\n\n", pid);
-}
+	static unsigned long long int	character;
+	static int	counter;
 
-void	handle_signal(int code)
-{
-	static int	actual_char;
-
-	if (code == SIGUSR1)
-		actual_char = actual_char << 1;
-	else if (code == SIGUSR2)
-		actual_char = (actual_char << 1) + 1;
-	else
-		ft_printf("\nERROR : UNEXPECTED SIGNAL RECEIVED\n");
-	if ((++g_count == 32))
+	(void)context;
+	if (sig == SIGUSR2)
 	{
-		if (actual_char == 0)
-		{
-			ft_printf("\n\n===== TRANSMISSION TERMINEE =====\n\n\nEn attente...\n");
-			ft_printf("===== PRINT AREA =====\n\n");
-		}
-		else
-			ft_putchar_fd(actual_char, 1);
-		actual_char = 0;
-		g_count = 0;
+		character = character << 1;
+		write(1, "0", 1);
 	}
+	else if (sig == SIGUSR1)
+	{
+		character = (character << 1) + 1;
+		write(1, "1", 1);
+	}
+	else
+		ft_printf("Error\nUnexpected signal received (%d)", sig);
+	counter++;
+	if (counter == sizeof(long long int) * 8)
+	{
+		if (character == 0)
+			write(1, "\n\n==========\nListening...\n", 26);
+		else
+		{
+			write(1, " --- ", 5);
+			write(1, &character, 1);
+			write(1, "\n", 1);
+		}
+		// extract_content(character);
+		character = 0;
+		counter = 0;
+	}
+	else if (counter % 8 == 0)
+		write(1, " ", 1);
+	g_acknowledge[0] = 1;
+	g_acknowledge[1] = info->si_pid;
+	return;
 }
 
 int	main(void)
 {
-	struct sigaction	sa;
+	struct sigaction	sa_server;
 
-	display_server_startup_message(getpid());
-	ft_printf("En attente...\n===== PRINT AREA =====\n\n");
-	sa.sa_handler = &handle_signal;
-	sa.sa_flags = 0;
-	sigemptyset(&sa.sa_mask);
-	sigaction(SIGUSR1, &sa, NULL);
-	sigaction(SIGUSR2, &sa, NULL);
-	while (1)
-		pause();
+	sa_server.sa_flags = SA_SIGINFO;
+	sa_server.sa_sigaction = server_sighandler;
+	sigemptyset(&sa_server.sa_mask);
+	sigaddset(&sa_server.sa_mask, SIGUSR1);
+	sigaddset(&sa_server.sa_mask, SIGUSR2);
+	if (sigaction(SIGUSR1, &sa_server, NULL) == -1 || sigaction(SIGUSR2, &sa_server, NULL) == -1)
+	{
+		ft_printf("Error\nServer failed to launch (sigaction setup).\n");
+		return (0);
+	}
+	ft_printf("MINITALK Server ready!\nPID : %d\nListening...\n", getpid());
+	while(1)
+	{
+		while (g_acknowledge[0] != 1)
+			pause();
+		kill(g_acknowledge[1], SIGUSR1);
+		g_acknowledge[0] = 0;
+	}
 }

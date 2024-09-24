@@ -5,26 +5,19 @@ CFLAGS = -std=gnu99 -Wall -Wextra -Werror
 INCLUDES = -I/usr/include -Ilibft -Imy_printf
 RM = rm -rf
 NAME = minitalk
+
 #LIBRARIES
 LIBFT = -Llibft -l:libft.a
 PRINTF = -Lmy_printf -l:libftprintf.a
 #SOURCES
-#SERVER_SRCS = server.c
-SERVER_SRCS = new/server_bis.c
-
-#CLIENT_SRCS = client.c
-CLIENT_SRCS = new/client_bis.c
-
-#GLOBAL_SRCS = utils.c
+SERVER_SRCS = server.c
+CLIENT_SRCS = client.c
 GLOBAL_SRCS = utils.c
-
-
-
-
 #OBJECTS
 SERVER_OBJS = $(SERVER_SRCS:.c=.o)
 CLIENT_OBJS = $(CLIENT_SRCS:.c=.o)
 GLOBAL_OBJS = $(GLOBAL_SRCS:.c=.o)
+
 #COLORS
 RED = \033[1;31m
 LIGHT_GREEN = \033[0;32m
@@ -42,11 +35,13 @@ make_libft:
 make_printf:
 	@cd my_printf && make > /dev/null
 	@echo "$(BLUE)FT_PRINTF			$(CUT)$(GREEN)[OK]$(CUT)"
-make_server: $(SERVER_OBJS) $(GLOBAL_OBJS)
-	@$(CC) $(CFLAGS) $(SERVER_OBJS) $(GLOBAL_OBJS) $(LIBFT) $(PRINTF) -o server
+make_server: $(SERVER_OBJS) #$(GLOBAL_OBJS)
+#	@$(CC) $(CFLAGS) $(SERVER_OBJS) $(GLOBAL_OBJS) $(LIBFT) $(PRINTF) -o server
+	@$(CC) $(CFLAGS) $(SERVER_OBJS) $(LIBFT) $(PRINTF) -o server
 	@echo "$(BLUE)SERVER				$(CUT)$(GREEN)[OK]$(CUT)"
-make_client: $(CLIENT_OBJS) $(GLOBAL_OBJS)
-	@$(CC) $(CFLAGS) $(CLIENT_OBJS) $(GLOBAL_OBJS) $(LIBFT) $(PRINTF) -o client
+make_client: $(CLIENT_OBJS) #$(GLOBAL_OBJS)
+#	@$(CC) $(CFLAGS) $(CLIENT_OBJS) $(GLOBAL_OBJS) $(LIBFT) $(PRINTF) -o client
+	@$(CC) $(CFLAGS) $(CLIENT_OBJS) $(LIBFT) $(PRINTF) -o client
 	@echo "$(BLUE)CLIENT				$(CUT)$(GREEN)[OK]$(CUT)"
 %.o: %.c
 	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
