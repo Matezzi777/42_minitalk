@@ -24,42 +24,30 @@ static volatile sig_atomic_t	g_acknowledge[2] = {0, 0};
 
 static void	server_sighandler(int sig, siginfo_t *info, void *context)
 {
-	static unsigned long long int	character;
-	static int	counter;
+	static unsigned int	character;
+	static unsigned int	counter;
 
 	(void)context;
 	if (sig == SIGUSR2)
-	{
 		character = character << 1;
-		write(1, "0", 1);
-	}
 	else if (sig == SIGUSR1)
-	{
 		character = (character << 1) + 1;
-		write(1, "1", 1);
-	}
 	else
 		ft_printf("Error\nUnexpected signal received (%d)", sig);
 	counter++;
-	if (counter == sizeof(long long int) * 8)
+	if (counter == 32)
 	{
 		if (character == 0)
 			write(1, "\n\n==========\nListening...\n", 26);
 		else
 		{
-			write(1, " --- ", 5);
 			write(1, &character, 1);
-			write(1, "\n", 1);
 		}
-		// extract_content(character);
 		character = 0;
 		counter = 0;
 	}
-	else if (counter % 8 == 0)
-		write(1, " ", 1);
 	g_acknowledge[0] = 1;
 	g_acknowledge[1] = info->si_pid;
-	return;
 }
 
 int	main(void)

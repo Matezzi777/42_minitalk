@@ -61,15 +61,15 @@ static void	setup_sigaction(struct sigaction *sa, siginfo_t *info, int pid)
 	info->si_pid = pid;
 }
 
-static size_t	send_char(int pid, unsigned long long int character, size_t nb_sig_sent)
+static void	send_char(int pid, unsigned int character)
 {
-	unsigned long int	counter;
-	int	kill_return_value;
+	unsigned int	counter;
+	int				kill_return_value;
 
 	counter = -1;
-	while(++counter < (sizeof(long long int) * 8))
+	while (++counter < 32)
 	{
-		if ((character >> (((sizeof(long long int) * 8) - 1) - counter)) & 1)
+		if ((character >> (31 - counter)) & 1)
 			kill_return_value = kill(pid, SIGUSR1);
 		else
 			kill_return_value = kill(pid, SIGUSR2);
@@ -78,12 +78,10 @@ static size_t	send_char(int pid, unsigned long long int character, size_t nb_sig
 			ft_printf("Error\nError during signal sending from client.\n");
 			exit(EXIT_FAILURE);
 		}
-		while(g_acknowledge != 1)
-			;
+		// while (g_acknowledge != 1)
+		pause();
 		g_acknowledge = 0;
-		nb_sig_sent++;
 	}
-	return (nb_sig_sent);
 }
 
 int	main(int argc, char **argv)
@@ -91,20 +89,14 @@ int	main(int argc, char **argv)
 	int					i;
 	struct sigaction	sa_client;
 	siginfo_t			siginfo;
-	size_t				nb_sig_sent;
-	size_t				expected;
 
 	if (arg_error(argc, argv))
 		return (0);
 	setup_sigaction(&sa_client, &siginfo, ft_atoi(argv[1]));
 	i = -1;
-	nb_sig_sent = 0;
 	while (argv[2][++i])
-	{
-		nb_sig_sent = send_char(siginfo.si_pid, (unsigned long long int)argv[2][i], nb_sig_sent);
-	}
-	nb_sig_sent = send_char(siginfo.si_pid, '\0', nb_sig_sent);
-	expected = (ft_strlen(argv[2]) + 1) * sizeof(long long int) * 8;
-	ft_printf("Success !\nServer received %d/%dbits (%d caractères + \\0).\n", nb_sig_sent, expected, (nb_sig_sent / 32) - 1);
+		send_char(siginfo.si_pid, (unsigned int)argv[2][i]);
+	send_char(siginfo.si_pid, '\0');
+	ft_printf("Success !\nServer received %d characters.\n", i);
 	return (0);
 }
