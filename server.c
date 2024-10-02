@@ -68,8 +68,8 @@ int	main(void)
 	while(1)
 	{
 		while (g_acknowledge[0] != 1)
-			pause();
-		kill(g_acknowledge[1], SIGUSR1);
+			;
 		g_acknowledge[0] = 0;
+		kill(g_acknowledge[1], SIGUSR1);
 	}
 }

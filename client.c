@@ -78,8 +78,8 @@ static void	send_char(int pid, unsigned int character)
 			ft_printf("Error\nError during signal sending from client.\n");
 			exit(EXIT_FAILURE);
 		}
-		// while (g_acknowledge != 1)
-		pause();
+		while (!g_acknowledge)
+			;
 		g_acknowledge = 0;
 	}
 }
