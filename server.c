@@ -1,26 +1,19 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   server.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mmartina <mmartina@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/10/03 01:25:39 by mmartina          #+#    #+#             */
+/*   Updated: 2024/10/03 01:27:03 by mmartina         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minitalk.h"
 
 // g_acknowledge = [flag_signal_received , signal_origin_pid]
 static volatile sig_atomic_t	g_acknowledge[2] = {0, 0};
-
-// static void	extract_content(int c)
-// {
-// 	static int	string[100];
-// 	static int	i;
-
-// 	string[i++] = c;
-// 	if (i == 100)
-// 	{
-// 		write(1, &string, i);
-// 		i = 0;
-// 	}
-// 	if (c == 0)
-// 	{
-// 		write(1, &string, i);
-// 		write(1, "\n\n==========\nListening...\n", 26);
-// 		i = 0;
-// 	}
-// }
 
 static void	server_sighandler(int sig, siginfo_t *info, void *context)
 {
@@ -59,13 +52,14 @@ int	main(void)
 	sigemptyset(&sa_server.sa_mask);
 	sigaddset(&sa_server.sa_mask, SIGUSR1);
 	sigaddset(&sa_server.sa_mask, SIGUSR2);
-	if (sigaction(SIGUSR1, &sa_server, NULL) == -1 || sigaction(SIGUSR2, &sa_server, NULL) == -1)
+	if (sigaction(SIGUSR1, &sa_server, NULL) == -1
+		|| sigaction(SIGUSR2, &sa_server, NULL) == -1)
 	{
 		ft_printf("Error\nServer failed to launch (sigaction setup).\n");
 		return (0);
 	}
 	ft_printf("MINITALK Server ready!\nPID : %d\nListening...\n", getpid());
-	while(1)
+	while (1)
 	{
 		while (g_acknowledge[0] != 1)
 			;
