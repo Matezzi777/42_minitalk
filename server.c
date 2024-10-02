@@ -6,15 +6,16 @@
 /*   By: mmartina <mmartina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/03 01:25:39 by mmartina          #+#    #+#             */
-/*   Updated: 2024/10/03 01:27:03 by mmartina         ###   ########.fr       */
+/*   Updated: 2024/10/03 01:36:57 by mmartina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
 
-// g_acknowledge = [flag_signal_received , signal_origin_pid]
+// VARIABLE GLOBALE ACK ([0] = FLAG ACK, [1] = PID DU CLIENT)
 static volatile sig_atomic_t	g_acknowledge[2] = {0, 0};
 
+// GESTIONNAIRE DE SIGNAUX
 static void	server_sighandler(int sig, siginfo_t *info, void *context)
 {
 	static unsigned int	character;
@@ -43,6 +44,7 @@ static void	server_sighandler(int sig, siginfo_t *info, void *context)
 	g_acknowledge[1] = info->si_pid;
 }
 
+//MAIN
 int	main(void)
 {
 	struct sigaction	sa_server;

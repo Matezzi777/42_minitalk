@@ -1,7 +1,7 @@
 ################################### VARIABLES ##################################
 #COMPILING
 CC = gcc
-CFLAGS = -std=gnu99 -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror
 INCLUDES = -I/usr/include -Ilibft -Imy_printf
 RM = rm -rf
 NAME = minitalk
@@ -35,16 +35,15 @@ make_libft:
 make_printf:
 	@cd my_printf && make > /dev/null
 	@echo "$(BLUE)FT_PRINTF			$(CUT)$(GREEN)[OK]$(CUT)"
-make_server: $(SERVER_OBJS) #$(GLOBAL_OBJS)
-#	@$(CC) $(CFLAGS) $(SERVER_OBJS) $(GLOBAL_OBJS) $(LIBFT) $(PRINTF) -o server
+make_server: $(SERVER_OBJS)
 	@$(CC) $(CFLAGS) $(SERVER_OBJS) $(LIBFT) $(PRINTF) -o server
 	@echo "$(BLUE)SERVER				$(CUT)$(GREEN)[OK]$(CUT)"
-make_client: $(CLIENT_OBJS) #$(GLOBAL_OBJS)
-#	@$(CC) $(CFLAGS) $(CLIENT_OBJS) $(GLOBAL_OBJS) $(LIBFT) $(PRINTF) -o client
+make_client: $(CLIENT_OBJS)
 	@$(CC) $(CFLAGS) $(CLIENT_OBJS) $(LIBFT) $(PRINTF) -o client
 	@echo "$(BLUE)CLIENT				$(CUT)$(GREEN)[OK]$(CUT)"
 %.o: %.c
 	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+
 #CLEANING RULES
 fclean: clean
 	@$(RM) client server

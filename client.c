@@ -6,25 +6,16 @@
 /*   By: mmartina <mmartina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/03 01:25:22 by mmartina          #+#    #+#             */
-/*   Updated: 2024/10/03 01:25:24 by mmartina         ###   ########.fr       */
+/*   Updated: 2024/10/03 01:39:23 by mmartina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
 
+//VARIABLE GLOBALE ACK
 static volatile sig_atomic_t	g_acknowledge = 0;
 
-/*Check if there are some errors in the arguments passed.
-	Arguments :
-	-> int	nb_args : basically argc in the main.
-	-> char	**arguments : basically argv in the main.
-	Returns :
-	-> 1 : If an error is detected.
-		-> Wrong nb of arguments.
-		-> PID not only composed of digits.
-		-> PID <= 0.
-	-> 0 : If the arguments are corrects.
-*/
+//CHECK SI LES ARGUMENTS SONT VALIDES
 static int	arg_error(int nb_args, char **arguments)
 {
 	int	i;
@@ -51,6 +42,7 @@ static int	arg_error(int nb_args, char **arguments)
 	return (0);
 }
 
+//GESTIONNAIRE DE SIGNAUX
 static void	client_sighandler(int sig, siginfo_t *info, void *context)
 {
 	if (sig != SIGUSR1)
@@ -63,6 +55,7 @@ static void	client_sighandler(int sig, siginfo_t *info, void *context)
 	g_acknowledge = 1;
 }
 
+//PARAMETRAGE DE LA GESTION DES SIGNAUX
 static void	setup_sigaction(struct sigaction *sa, siginfo_t *info, int pid)
 {
 	sa->sa_flags = SA_SIGINFO;
@@ -73,6 +66,7 @@ static void	setup_sigaction(struct sigaction *sa, siginfo_t *info, int pid)
 	info->si_pid = pid;
 }
 
+//ENVOIE UN CARACTERE SOUS FORMAT (32 BITS)
 static void	send_char(int pid, unsigned int character)
 {
 	unsigned int	counter;
@@ -96,6 +90,7 @@ static void	send_char(int pid, unsigned int character)
 	}
 }
 
+//MAIN
 int	main(int argc, char **argv)
 {
 	int					i;
