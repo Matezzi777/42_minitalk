@@ -1,16 +1,32 @@
 #include <stdio.h>
+#include <signal.h>
+#include <unistd.h>
+
+void	handler(int sig, siginfo_t *info, void *context)
+{
+	(void)context;
+	printf("Signal %d received (from PID %d).\n", sig, info->si_pid);
+}
 
 int	main(int argc, char **argv)
 {
-	int	i;
+	struct sigaction	sa;
 
-	if (argc < 2)
-		printf("Aucun argument passé...\n");
-	else
+	(void)argc;
+	(void)argv;
+
+	printf("Server PID : %d\n", getpid());
+	sa.sa_sigaction = handler;
+	sigemptyset(&sa.sa_mask);
+	sa.sa_flags = SA_SIGINFO;
+
+	sigaction(SIGINT, &sa, NULL);
+
+	while (1)
 	{
-		printf("Arguments passés :\n");
-		i = 0;
-		while (++i < argc)
-			printf("	- %s\n", argv[i]);
+		printf("Waiting for signals...\n");
+		sleep(1);
 	}
+
+	return (0);
 }
