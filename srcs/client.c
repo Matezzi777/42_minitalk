@@ -6,25 +6,22 @@
 /*   By: maxmart2 <maxmart2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 22:53:24 by maxmart2          #+#    #+#             */
-/*   Updated: 2025/05/17 22:57:06 by maxmart2         ###   ########.fr       */
+/*   Updated: 2025/05/18 02:12:51 by maxmart2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
 #include "minitalk.h"
-
-t_bool	check_pid(char *pid)
-{
-	
-}
+#include "libft.h"
 
 int	main(int argc, char **argv)
 {
+	int	server_pid;
+
 	if (argc != 3)
-		ft_printf("Wrong number of argument.\nUse : ./client <PID> <string>\n");
+		ft_printf("Wrong nb of arguments.\nUse : ./client <PID> <string>\n");
 	else
 	{
-		if (!check_pid(argv[1]))
-			return ;
+		server_pid = ft_atoi(argv[1]);
+		ft_printf("Sending \"%s\" to server %d\n", argv[2], server_pid);
 	}
 }

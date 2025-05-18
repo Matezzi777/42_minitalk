@@ -6,17 +6,13 @@
 /*   By: maxmart2 <maxmart2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 22:53:21 by maxmart2          #+#    #+#             */
-/*   Updated: 2025/05/17 22:56:07 by maxmart2         ###   ########.fr       */
+/*   Updated: 2025/05/18 01:59:01 by maxmart2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINITALK_H
 # define MINITALK_H
 
-typedef enum	e_bool
-{
-	FALSE,
-	TRUE
-}				t_bool;
+# include <signal.h>
 
 #endif
