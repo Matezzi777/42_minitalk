@@ -2,8 +2,8 @@
 ### COMPILING ###
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
-LIBFT = -Llibft -lft
-INCLUDES = -Iincludes
+LIBFT = -Llibft -l:libft.a
+INCLUDES = -I./includes
 ### PROGRAMS ###
 NAME = minitalk
 CLIENT = client
@@ -34,13 +34,13 @@ libft:
 	cd libft && make
 
 $(CLIENT): $(CLIENT_OBJS)
-	$(CC) $(CFLAGS) $(CLIENT_OBJS) $(LIBFT) -o $@
+	$(CC) $(CFLAGS) $(CLIENT_OBJS) -o $@ $(LIBFT)
 
 $(SERVER): $(SERVER_OBJS)
-	$(CC) $(CFLAGS) $(SERVER_OBJS) $(LIBFT) -o $@
+	$(CC) $(CFLAGS) $(SERVER_OBJS) -o $@ $(LIBFT)
 
 %.o: %.c
-	$(CC) $(CFLAGS) $(INCLUDES) $(LIBFT) -c $< -o $@
+	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 ### CLEANING ###
 fclean: clean
